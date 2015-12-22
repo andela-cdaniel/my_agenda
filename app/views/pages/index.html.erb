@@ -5,11 +5,21 @@
   <p>
     <a href="/agenda/new"> Create a new agenda </a>
   </p>
-  <p>
-    Here is a list of all items in your agenda:
-  </p>
 
   <div class="agendas">
-
+    <% unless @agendas.empty? %>
+      <p>
+        Here is a list of all items in your agenda:
+      </p>
+      <ul>
+        <% @agendas.each do |agenda| %>
+          <li><%= agenda["name"] %></li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p>
+        Sorry, you do not have any agenda created yet. Create a new agenda with the link above.
+      </p>
+    <% end %>
   </div>
 </section>
