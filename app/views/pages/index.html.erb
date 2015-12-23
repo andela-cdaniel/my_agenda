@@ -1,22 +1,28 @@
-<section class="intro">
-  <h1>
+<section class="intro" style="font-family: sans-serif; color: #666">
+  <h1 style="color: #555">
     My Agenda
   </h1>
   <p>
-    <a href="/agenda/new"> Create a new agenda </a>
+    <a href="/agenda/new" style="background-color: #12a4e9; color: #fff; text-decoration: none; border: 0; padding: 7px 12px;">
+      Create a new agenda
+    </a>
   </p>
 
   <div class="agendas">
     <% unless @agendas.empty? %>
       <p>
         Here is a list of all items in your agenda:
+        <br>
+        <small>
+          <em>Note: Items that are struck out have been marked as complete!</em>
+        </small>
       </p>
-      <ul class="lists">
+      <ul class="lists" style="list-style: none; -webkit-padding-start: 0; -moz-padding-start: 0">
         <% @agendas.each do |agenda| %>
-          <li class="<%= agenda.done %>">
+          <li <%= "style='text-decoration: line-through; color: tomato'" if agenda.done %>>
             <%= agenda.name.capitalize %>
-            <a href="/agenda/<%= agenda.id %>/edit">Edit</a>
-            <a href="#"= id="<%= agenda.id %>" data-method="delete">
+            <a href="/agenda/<%= agenda.id %>/edit" style="color: #12a4e9">Edit</a>
+            <a href="#"= id="<%= agenda.id %>" data-method="delete" style="color: tomato">
               Delete
             </a>
           </li>
@@ -36,12 +42,16 @@
       var linkBtn = document.querySelector(".lists");
 
       linkBtn.addEventListener("click", function (e) {
-        e.preventDefault();
         var clickedBtn = e.target,
             frag = document.createDocumentFragment(),
             formElem = document.createElement("form"),
             hiddenFormMethod = document.createElement("input"),
             formVal = document.createElement("input");
+
+        if (clickedBtn.dataset.method === "delete") {
+          e.preventDefault();
+          promptUser = confirm("Do you really want to delete");
+        }
 
         formElem.action = "/agenda/" + clickedBtn.id;
         formElem.method = "post";
@@ -57,8 +67,6 @@
         formElem.appendChild(formVal);
 
         document.body.appendChild(frag.appendChild(formElem));
-
-        promptUser = confirm("Do you really want to delete");
 
         if (promptUser) {
           formElem.submit();
