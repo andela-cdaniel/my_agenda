@@ -1,0 +1,36 @@
+<% if @agenda.done %>
+  <% title =  "Uncheck to mark as not completed" %>
+<% else %>
+  <% title = "Check to mark as complete" %>
+<% end %>
+<section class="edit-agenda">
+  <h2>Edit this agenda</h2>
+  <form action="/agenda/<%= @agenda.id %>" method="POST">
+    <input type="hidden" name="_method" value="put">
+    <div class="group">
+      <label for="agenda_name">Name: </label>
+      <input type="text" name="agenda[name]", id="agenda_name" placeholder="Visit the eiffel tower" value="<%= @agenda.name %>" required>
+    </div>
+
+    <div class="group">
+      <input type="checkbox" name="agenda[done]" id="agenda_done" value="true" title="<%= title %>" <%= "checked" if @agenda.done %>>
+      <% if @agenda.done %>
+        <label for="agenda_done">This task has been marked as complete!</label>
+      <% else %>
+        <label for="agenda_done">Mark as complete</label>
+      <% end %>
+    </div>
+
+    <div class="group">
+      <button type="submit">
+        Update
+      </button>
+    </div>
+  </form>
+
+  <p>
+    <a href="/">
+      Back to homepage
+    </a>
+  </p>
+</section>

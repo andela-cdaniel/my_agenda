@@ -11,9 +11,15 @@
       <p>
         Here is a list of all items in your agenda:
       </p>
-      <ul>
+      <ul class="lists">
         <% @agendas.each do |agenda| %>
-          <li><%= agenda["name"] %></li>
+          <li class="<%= agenda.done %>">
+            <%= agenda.name.capitalize %>
+            <a href="/agenda/<%= agenda.id %>/edit">Edit</a>
+            <a href="#"= id="<%= agenda.id %>" data-method="delete">
+              Delete
+            </a>
+          </li>
         <% end %>
       </ul>
     <% else %>
@@ -23,3 +29,49 @@
     <% end %>
   </div>
 </section>
+
+<script>
+  (function () {
+    var makeDeleteReq = function () {
+      var linkBtn = document.querySelector(".lists");
+
+      linkBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        var clickedBtn = e.target,
+            frag = document.createDocumentFragment(),
+            formElem = document.createElement("form"),
+            hiddenFormMethod = document.createElement("input"),
+            formVal = document.createElement("input");
+
+        formElem.action = "/agenda/" + clickedBtn.id;
+        formElem.method = "post";
+
+        hiddenFormMethod.type = "hidden";
+        hiddenFormMethod.name = "_method";
+        hiddenFormMethod.value = "delete";
+
+        formVal.name = "agenda[id]"
+        formVal.value = clickedBtn.id
+
+        formElem.appendChild(hiddenFormMethod);
+        formElem.appendChild(formVal);
+
+        document.body.appendChild(frag.appendChild(formElem));
+
+        promptUser = confirm("Do you really want to delete");
+
+        if (promptUser) {
+          formElem.submit();
+          document.body.removeChild(formElem);
+        } else {
+          document.body.removeChild(formElem);
+          return
+        }
+      }, false)
+
+
+    };
+
+    makeDeleteReq();
+  }());
+</script>
