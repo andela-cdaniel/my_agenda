@@ -7,8 +7,6 @@ class AgendasController < Bijou::BaseController
     agenda = Agenda.new(name: name)
     if agenda.save
       redirect_to "/"
-    else
-      render :new
     end
   end
 
@@ -23,8 +21,6 @@ class AgendasController < Bijou::BaseController
 
     if requested_record.update(name: name, done: done)
       redirect_to "/"
-    else
-      render :edit
     end
   end
 

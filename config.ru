@@ -1,5 +1,7 @@
-require File.expand_path("../config/setup", __FILE__)
-require File.expand_path("../config/routes", __FILE__)
+PATH = __dir__
+
+require File.join(PATH, "config", "setup")
+require File.join(PATH, "config", "routes")
 
 use Rack::MethodOverride
 use Rack::Reloader
